@@ -44,15 +44,25 @@ defmodule ExOauth2Provider.Authorization.CodePkceTest do
   end
 
   test "#preauthorize/3 missing code_challenge", %{resource_owner: resource_owner} do
-    assert Authorization.preauthorize(resource_owner, @missing_code_challenge_request,
+    assert {:ok, _, _} = Authorization.preauthorize(resource_owner, @missing_code_challenge_request,
              otp_app: :ex_oauth2_provider
-           ) == {:error, @invalid_request, :bad_request}
+           )
   end
 
   test "#authorize/3 missing code_challenge", %{resource_owner: resource_owner} do
-    assert Authorization.authorize(resource_owner, @missing_code_challenge_request,
-             otp_app: :ex_oauth2_provider
-           ) == {:error, @invalid_request, :bad_request}
+    assert {:native_redirect, %{code: code}} =
+             Authorization.authorize(resource_owner, @missing_code_challenge_request,
+               otp_app: :ex_oauth2_provider
+             )
+
+    owner_id = resource_owner.id
+
+    assert %{
+             resource_owner_id: ^owner_id,
+             code_challenge: nil,
+             code_challenge_method: nil,
+             scopes: "app:read app:write"
+           } = Repo.get_by(OauthAccessGrant, token: code)
   end
 
   test "#authorize/3 invalid code_challenge_method", %{resource_owner: resource_owner} do

@@ -141,7 +141,7 @@ defmodule ExOauth2Provider.Authorization.Code do
 
   defp issue_grant({:error, %{error: _error} = params}, _config), do: {:error, params}
   defp issue_grant({:ok, %{resource_owner: resource_owner, client: application, request: request} = params}, config) do
-    filtered_request = if Config.use_pkce?(config) do
+    filtered_request = if Config.use_pkce?(config) and request["code_challenge"] do
       Map.merge(%{"code_challenge_method" => "plain"}, request)
       |> Map.take(["redirect_uri", "scope", "code_challenge", "code_challenge_method"])
       |> Map.update!("code_challenge", fn v -> String.replace(v, "=", "") end)
@@ -245,7 +245,7 @@ defmodule ExOauth2Provider.Authorization.Code do
       Error.add_error({:ok, params}, Error.invalid_request())
     end
   end
-  defp validate_pkce({:ok, params}, true), do: Error.add_error({:ok, params}, Error.invalid_request()) # missing code_challenge
+  defp validate_pkce({:ok, params}, true), do: {:ok, params} # missing code_challenge
 
   @sha256_byte_size 256/8
 
