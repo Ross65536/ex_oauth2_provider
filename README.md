@@ -1,5 +1,7 @@
 # ExOauth2Provider
 
+**FORK NO LONGER MAINTAINED**
+
 Forked from https://github.com/danschultzer/ex_oauth2_provider
 
 [![Build Status](https://travis-ci.org/danschultzer/ex_oauth2_provider.svg?branch=master)](https://travis-ci.org/danschultzer/ex_oauth2_provider) [![hex.pm](http://img.shields.io/hexpm/v/ex_oauth2_provider.svg?style=flat)](https://hex.pm/packages/ex_oauth2_provider) [![hex.pm downloads](https://img.shields.io/hexpm/dt/ex_oauth2_provider.svg?style=flat)](https://hex.pm/packages/ex_oauth2_provider)
