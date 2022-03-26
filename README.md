@@ -104,7 +104,7 @@ Enable PKCE in configuration `config/config.ex`:
 ```elixir
 config :my_app, ExOauth2Provider,
   # ...
-  # this will enable PKCE for *all* applications
+  # this will enable PKCE support
   use_pkce: true
 ```
 
